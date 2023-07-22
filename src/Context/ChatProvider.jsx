@@ -38,4 +38,4 @@ export const ChatState = () => {
   return useContext(ChatContext);
 };
 
-export default withRouter(ChatProvider);
+export default ChatProvider;
