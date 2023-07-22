@@ -6,6 +6,7 @@ import { FormControl, FormLabel } from '@chakra-ui/form-control';
 import axios from 'axios';
 import { useToast } from '@chakra-ui/react';
 import { useHistory } from 'react-router-dom';
+import { ChatState } from './../../Context/ChatProvider';
 
 const Login = () => {
   const [email, setEmail] = useState();
@@ -14,6 +15,7 @@ const Login = () => {
   const toast = useToast();
   const [loading, setLoading] = useState(false);
   const history = useHistory();
+  const { setUser, user } = ChatState();
 
   const handleClick = () => setShow(!show);
 
@@ -43,7 +45,8 @@ const Login = () => {
         { email, password },
         config
       );
-
+      setUser(data);
+      // console.log(data);
       toast({
         title: 'Login Successful',
         status: 'success',
@@ -51,10 +54,10 @@ const Login = () => {
         isClosable: true,
         position: 'bottom',
       });
-      // setUser(data);
       localStorage.setItem('userInfo', JSON.stringify(data));
       setLoading(false);
       history.push('/chats');
+      // document.window.location.reload();
     } catch (error) {
       toast({
         title: 'Error Occured!',
