@@ -19,7 +19,7 @@ import '@uiw/react-markdown-preview/markdown.css';
 import ScrollableChat from './ScrollableChat';
 import io from 'socket.io-client';
 
-const ENDPOINT = 'http://localhost:3000';
+const ENDPOINT = 'https://chat-app-backend-oj1m.onrender.com';
 var socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
