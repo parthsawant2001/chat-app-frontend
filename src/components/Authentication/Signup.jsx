@@ -81,7 +81,11 @@ const Signup = () => {
         },
       };
       const { data } = await axios
-        .post('/api/user', { name, email, password, pic }, config)
+        .post(
+          'https://chat-app-backend-oj1m.onrender.com/api/user',
+          { name, email, password, pic },
+          config
+        )
         .catch((error) => {
           // Handle the error
           console.log('An error occurred:', error);

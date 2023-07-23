@@ -40,11 +40,22 @@ const Login = () => {
         },
       };
 
-      const { data } = await axios.post(
-        'https://chat-app-backend-oj1m.onrender.com/api/user/login',
-        { email, password },
-        config
-      );
+      const data = await axios
+        .post(
+          'https://chat-app-backend-oj1m.onrender.com/api/user/login',
+          { email, password },
+          config
+        )
+        .then();
+
+      if (data && data.d) {
+        const { values } = data;
+        // Do something with the 'data' here, e.g., store it in state or use it in your application
+        console.log('Login successful:', values);
+      } else {
+        console.log('Invalid response format:', data);
+      }
+
       setUser(data);
       // console.log(data);
       toast({

@@ -41,7 +41,10 @@ const GroupChatModal = ({ children }) => {
           Authorization: `Bearer ${user.token}`,
         },
       };
-      const { data } = await axios.get(`/api/user?search?${search}`, config);
+      const { data } = await axios.get(
+        `https://chat-app-backend-oj1m.onrender.com/api/user?search=?${search}`,
+        config
+      );
       setLoading(false);
       setSearchResults(data);
     } catch (error) {
