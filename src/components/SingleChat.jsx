@@ -11,7 +11,7 @@ import { FormControl } from '@chakra-ui/form-control';
 
 import 'react-quill/dist/quill.snow.css';
 import axios from 'axios';
-import { useToast } from '@chakra-ui/react';
+import { useToast, Button } from '@chakra-ui/react';
 import './styles.css';
 import MDEditor from '@uiw/react-md-editor';
 import '@uiw/react-md-editor/markdown-editor.css';
@@ -26,6 +26,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const toast = useToast();
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
   const [newMessage, setNewMessage] = useState('');
   const [socketConnected, setSocketConnected] = useState(false);
   const [typing, setTyping] = useState(false);
@@ -104,7 +105,8 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   });
 
   const sendMessage = async (e) => {
-    if (e.shiftKey && e.key === 'Enter' && newMessage) {
+    setButtonLoading(true);
+    if (newMessage) {
       socket.emit('stop typing', selectedChat._id);
       try {
         const config = {
@@ -121,6 +123,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
           },
           config
         );
+        setButtonLoading(false);
         setNewMessage('');
         // console.log(data);
         socket.emit('new message', data);
@@ -166,18 +169,6 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
     // );
     // console.log('matches' + matches);
     // setDropDown(matches.map((match) => <li key={match}>{match}</li>));
-  };
-
-  const mentionHandler = (e) => {
-    if (e.keyCode === 50) {
-      console.log('mention');
-      // console.log('@' + selectedChat.users.map((user) => user.name));
-      const groupUsers = selectedChat.users.map((user) =>
-        user.name.toLowerCase().includes(e)
-      );
-
-      console.log(groupUsers);
-    }
   };
 
   return (
@@ -239,7 +230,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <ScrollableChat messages={messages} />
               </div>
             )}
-            <FormControl onKeyDown={sendMessage} mt={3} isRequired>
+            <FormControl mt={3} isRequired>
               {isTyping ? (
                 <div
                   style={{
@@ -255,12 +246,19 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <></>
               )}
               {/* <MentionsInput> */}
-
+              <Button
+                isLoading={buttonLoading}
+                colorScheme='messenger'
+                onClick={sendMessage}
+                w='full'
+                mb={3}
+              >
+                Send
+              </Button>
               <MDEditor
                 data-color-mode='dark'
                 value={newMessage}
                 onChange={typingHandler}
-                onKeyDown={mentionHandler}
               />
               {/* </MentionsInput> */}
             </FormControl>

@@ -53,10 +53,10 @@ const Login = () => {
         // Do something with the 'data' here, e.g., store it in state or use it in your application
         console.log('Login successful:', values);
       } else {
-        console.log('Invalid response format:', data);
+        console.log('Invalid response format:', data.data);
       }
 
-      setUser(data);
+      setUser(data.data);
       // console.log(data);
       toast({
         title: 'Login Successful',
